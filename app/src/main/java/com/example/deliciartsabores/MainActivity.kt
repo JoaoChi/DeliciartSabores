@@ -63,29 +63,121 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun CardOptions(
+    modifier: Modifier = Modifier,
+    item: String,
+    valor: String,
+    quantidade: Int,
+    onQuantidadeChange: (Int) -> Unit
+){
+
+
+    val borderModifier = if (quantidade > 0){
+        Modifier.border(2.dp, colorResource(R.color.laranja), RoundedCornerShape(8.dp))
+    } else {
+        Modifier
+    }
+    Card (
+        modifier = modifier
+            .heightIn(min = 120.dp)
+            .fillMaxWidth()
+            .padding(8.dp)
+            .then(borderModifier)
+            .clickable { onQuantidadeChange(quantidade + 1) },
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(
+            colorResource(id = R.color.marrom_fraco)
+        )
+    ) {
+        Box (
+            modifier = Modifier
+                .padding(6.dp)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.TopEnd,
+        ) {
+            if ( quantidade > 0 ){
+                Text(
+                    text = "X",
+                    color = colorResource(id = R.color.black),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .clickable {
+                            onQuantidadeChange(quantidade - 1)
+                        }
+
+                )
+            }
+        }
+
+        Column (
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(text =  item, style = MaterialTheme.typography.bodyLarge)
+            Text(text = valor, style = MaterialTheme.typography.bodyMedium)
+
+            if (quantidade > 0) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Quantidade: $quantidade",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+
+                )
+            }
+        }
+    }
+}
+
+data class ItemPedido(
+    val nome: String,
+    val preco: Double
+)
+
+@Composable
 fun App(modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
-    val total = "R$ " + "300" + ",00"
-    Column (
+
+    val itens = listOf(
+        ItemPedido("12 Empadas", 24.0),
+        ItemPedido("6 Empadas", 12.0),
+        ItemPedido("Bolo Vulcão", 55.0),
+        ItemPedido("Bolo Vulcão", 45.0),
+        ItemPedido("Mini pizza", 3.0),
+        ItemPedido("Assado", 2.0)
+    )
+
+    var quantidades by remember {
+        mutableStateOf(List(itens.size) { 0 })
+    }
+
+    val total = itens.indices.sumOf { i -> itens[i].preco * quantidades[i] }
+
+
+    Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
-    ){
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp)
                 .background(colorResource(id = R.color.laranja)),
-        contentAlignment = Alignment.Center,
-        ){
-        Text(
-            text = "Deliciart Sabores",
-            style = (MaterialTheme.typography.titleLarge),
-            fontWeight = FontWeight.Bold,
-            color = colorResource(id = R.color.white)
-        )
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = "Deliciart Sabores",
+                style = (MaterialTheme.typography.titleLarge),
+                fontWeight = FontWeight.Bold,
+                color = colorResource(id = R.color.white)
+            )
         }
         Spacer(modifier = Modifier.padding(20.dp))
         Text(
@@ -95,115 +187,50 @@ fun App(modifier: Modifier = Modifier) {
             fontSize = 16.sp,
         )
         Spacer(modifier = Modifier.padding(8.dp))
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            CardOptions(item = "12 Empadas", valor = "R$ 24,00", modifier = Modifier.weight(1f))
-            CardOptions(item = "6 Empadas", valor = "R$ 12,00", modifier = Modifier.weight(1f))
-        }
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            CardOptions(item = "Bolo Vulcão", valor = "R$ 55,00", modifier = Modifier.weight(1f))
-            CardOptions(item = "Bolo Vulcão", valor = "R$ 45,00", modifier = Modifier.weight(1f))
-        }
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            CardOptions(item = "Empada", valor = "20,00 R$", modifier = Modifier.weight(1f))
-            CardOptions(item = "Bolo", valor = "70,00 R$", modifier = Modifier.weight(1f))
-        }
-
-
-
-        Spacer(modifier = Modifier.padding(8.dp))
-        Text(
-            text = "Total: ${total}",
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp,
-        )
-        Button(
-            modifier = Modifier.fillMaxWidth(0.8f),
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.laranja)
-            ),
-            onClick = {}) {
-            Text(text = "Finaliar pedido")
-
-        }
-    }
-}
-
-@SuppressLint("ResourceAsColor")
-@Composable
-fun CardOptions(modifier: Modifier = Modifier, item: String, valor: String){
-
-    var quantidade by remember {
-        mutableStateOf(0)
-    }
-
-    val borderModifier = if (quantidade > 0){
-        Modifier.border(2.dp, colorResource(R.color.laranja), RoundedCornerShape(8.dp))
-    } else {
-        Modifier
-    }
-        Card (
-            modifier = modifier
-                .heightIn(min = 120.dp)
-                .fillMaxWidth()
-                .padding(8.dp)
-                .then(borderModifier)
-                .clickable { quantidade++ },
-            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-            colors = CardDefaults.cardColors(
-                colorResource(id = R.color.marrom_fraco)
-            )
-        ) {
-            Box (
-                modifier = Modifier
-                    .padding(20.dp)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.TopEnd,
+        itens.chunked(2).forEachIndexed { rowIndex, rowItens ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                if ( quantidade > 0 ){
-                    Text(
-                        text = "X",
-                        color = colorResource(id = R.color.black),
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .clickable {
-                                if (quantidade > 0) quantidade--
+                rowItens.forEachIndexed { colIndex, item ->
+                    val index = rowIndex * 2 + colIndex
+                    CardOptions(
+                        item = item.nome,
+                        valor = "R$ %.2f".format(item.preco),
+                        quantidade = quantidades[index],
+                        onQuantidadeChange = { novaQtd ->
+                            quantidades = quantidades.toMutableList().also {
+                                it[index] = novaQtd
                             }
-                            .padding(4.dp)
+                        },
+                        modifier = Modifier.weight(1f)
                     )
                 }
             }
-
-                Column (
-                    modifier = Modifier.padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                Text(text =  item, style = MaterialTheme.typography.bodyLarge)
-                Text(text = valor, style = MaterialTheme.typography.bodyMedium)
-
-                    if (quantidade > 0) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "Qtd: $quantidade",
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black
-
-                        )
-                    }
-            }
         }
-}
+
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    Text(
+                        text = "Total: R$ %.2f".format(total),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.sp,
+                    )
+                    Button(
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(id = R.color.laranja)
+                        ),
+                        onClick = {}) {
+                        Text(text = "Finaliar pedido")
+
+                    }
+                }
+            }
+
+
+
 
 @Preview(showBackground = true)
 @Composable
