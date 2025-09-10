@@ -1,5 +1,6 @@
 package com.example.deliciartsabores
 
+import android.annotation.SuppressLint
 import android.graphics.Paint.Align
 import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
@@ -31,6 +32,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -134,14 +139,26 @@ fun App(modifier: Modifier = Modifier) {
     }
 }
 
+@SuppressLint("ResourceAsColor")
 @Composable
 fun CardOptions(modifier: Modifier = Modifier, item: String, valor: String){
+
+    var quantidade by remember {
+        mutableStateOf(0)
+    }
+
+    val borderModifier = if (quantidade > 0){
+        Modifier.border(2.dp, colorResource(R.color.laranja), RoundedCornerShape(8.dp))
+    } else {
+        Modifier
+    }
         Card (
             modifier = modifier
                 .heightIn(min = 120.dp)
                 .fillMaxWidth()
                 .padding(8.dp)
-                .clickable { },
+                .then(borderModifier)
+                .clickable { quantidade++ },
             elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
             colors = CardDefaults.cardColors(
                 colorResource(id = R.color.marrom_fraco)
@@ -151,18 +168,40 @@ fun CardOptions(modifier: Modifier = Modifier, item: String, valor: String){
                 modifier = Modifier
                     .padding(20.dp)
                     .fillMaxWidth(),
-                contentAlignment = Alignment.Center,
-            )
-            {
+                contentAlignment = Alignment.TopEnd,
+            ) {
+                if ( quantidade > 0 ){
+                    Text(
+                        text = "X",
+                        color = colorResource(id = R.color.black),
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .clickable {
+                                if (quantidade > 0) quantidade--
+                            }
+                            .padding(4.dp)
+                    )
+                }
+            }
+
                 Column (
                     modifier = Modifier.padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                 Text(text =  item, style = MaterialTheme.typography.bodyLarge)
                 Text(text = valor, style = MaterialTheme.typography.bodyMedium)
-            }
-            }
 
+                    if (quantidade > 0) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Qtd: $quantidade",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black
+
+                        )
+                    }
+            }
         }
 }
 
