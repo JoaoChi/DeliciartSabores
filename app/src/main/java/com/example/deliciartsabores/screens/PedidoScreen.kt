@@ -225,9 +225,14 @@ fun PedidoScreen(modifier: Modifier = Modifier) {
                     width = 2.dp,
                     color = colorResource(id = R.color.laranja),
                 ),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = colorResource(id = R.color.marrom_fraco),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = colorResource(id = R.color.marrom_fraco),
+                unfocusedContainerColor = colorResource(id = R.color.marrom_fraco),
+                disabledContainerColor = colorResource(id = R.color.marrom_fraco),
+                errorContainerColor = colorResource(id = R.color.marrom_fraco),
                 cursorColor = colorResource(id = R.color.laranja),
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
             )
         )
 
@@ -245,9 +250,14 @@ fun PedidoScreen(modifier: Modifier = Modifier) {
                     width = 2.dp,
                     color = colorResource(id = R.color.laranja),
                 ),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = colorResource(id = R.color.marrom_fraco),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = colorResource(id = R.color.marrom_fraco),
+                unfocusedContainerColor = colorResource(id = R.color.marrom_fraco),
+                disabledContainerColor = colorResource(id = R.color.marrom_fraco),
+                errorContainerColor = colorResource(id = R.color.marrom_fraco),
                 cursorColor = colorResource(id = R.color.laranja),
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
             )
         )
 

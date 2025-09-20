@@ -13,7 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.deliciartsabores.screens.PedidoScreen
-import com.example.deliciartsabores.ui.screens.HomeScreen
+import com.example.deliciartsabores.screens.HomeScreen
 import com.example.deliciartsabores.ui.theme.DeliciartSaboresTheme
 
 class MainActivity : ComponentActivity() {
