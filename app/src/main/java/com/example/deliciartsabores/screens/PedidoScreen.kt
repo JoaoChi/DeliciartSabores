@@ -133,10 +133,6 @@ fun PedidoScreen(modifier: Modifier = Modifier) {
                 )
             }
 
-
-
-
-
             Spacer(modifier = Modifier.padding(6.dp))
             Text(
                 text = "Total: R$ %.2f".format(total),
@@ -145,57 +141,6 @@ fun PedidoScreen(modifier: Modifier = Modifier) {
                 fontSize = 16.sp,
             )
             Spacer(modifier = Modifier.padding(8.dp))
-
-//        TextField(
-//            value = name,
-//            onValueChange = { name = it },
-//            label = { Text(text = "Nome") },
-//            placeholder = { Text(text = "Nome do Cliente") },
-//            leadingIcon = { Icon(Icons.Default.Create, contentDescription = null) },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp)
-//                .fillMaxWidth()
-//                .border(
-//                    width = 2.dp,
-//                    color = colorResource(id = R.color.laranja),
-//                ),
-//            colors = TextFieldDefaults.colors(
-//                focusedContainerColor = colorResource(id = R.color.marrom_fraco),
-//                unfocusedContainerColor = colorResource(id = R.color.marrom_fraco),
-//                disabledContainerColor = colorResource(id = R.color.marrom_fraco),
-//                errorContainerColor = colorResource(id = R.color.marrom_fraco),
-//                cursorColor = colorResource(id = R.color.laranja),
-//                focusedIndicatorColor = Color.Transparent,
-//                unfocusedIndicatorColor = Color.Transparent
-//            )
-//        )
-//
-//        TextField(
-//            value = endereco,
-//            onValueChange = { endereco = it },
-//            label = { Text(text = "Endereço") },
-//            placeholder = { Text(text = "Endereço do Cliente") },
-//            leadingIcon = { Icon(Icons.Default.LocationOn, contentDescription = null) },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp)
-//                .fillMaxWidth()
-//                .border(
-//                    width = 2.dp,
-//                    color = colorResource(id = R.color.laranja),
-//                ),
-//            colors = TextFieldDefaults.colors(
-//                focusedContainerColor = colorResource(id = R.color.marrom_fraco),
-//                unfocusedContainerColor = colorResource(id = R.color.marrom_fraco),
-//                disabledContainerColor = colorResource(id = R.color.marrom_fraco),
-//                errorContainerColor = colorResource(id = R.color.marrom_fraco),
-//                cursorColor = colorResource(id = R.color.laranja),
-//                focusedIndicatorColor = Color.Transparent,
-//                unfocusedIndicatorColor = Color.Transparent
-//            )
-//        )
-
 
             Row(
                 modifier = Modifier
