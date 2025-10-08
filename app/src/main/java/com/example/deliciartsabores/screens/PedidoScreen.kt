@@ -1,5 +1,7 @@
 package com.example.deliciartsabores.screens
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,41 +47,41 @@ fun PedidoScreen(modifier: Modifier = Modifier) {
     val produtos = listOf(
         Produto(
             id = "1",
-            imageRes = R.drawable.ic_launcher_foreground,
+            imageRes = R.drawable.empada,
             title = "12 Empadas",
             price = 24.0
 
         ),
         Produto(
             id = "2",
-            imageRes = R.drawable.ic_launcher_foreground,
+            imageRes = R.drawable.empada,
             title = "6 Empadas",
             price = 12.0
         ),
-//        Produto(
-//            id = "3",
-//            imageRes = R.drawable.ic_launcher_foreground,
-//            title = "Bolo Vulcão Chocolate",
-//            price = 55.0
-//        ),
-//        Produto(
-//            id = "4",
-//            imageRes = R.drawable.ic_launcher_foreground,
-//            title = "Bolo Vulcão Cenoura",
-//            price = 45.0
-//        ),
-//        Produto(
-//            id = "5",
-//            imageRes = R.drawable.ic_launcher_foreground,
-//            title = "Mini Pizza",
-//            price = 3.0
-//        ),
-//        Produto(
-//            id = "6",
-//            imageRes = R.drawable.ic_launcher_foreground,
-//            title = "Assado",
-//            price = 2.0
-//        )
+        Produto(
+            id = "3",
+            imageRes = R.drawable.ic_launcher_foreground,
+            title = "Bolo Vulcão Chocolate",
+            price = 55.0
+        ),
+        Produto(
+            id = "4",
+            imageRes = R.drawable.bolocenoura,
+            title = "Bolo Vulcão Cenoura",
+            price = 45.0
+        ),
+        Produto(
+            id = "5",
+            imageRes = R.drawable.ic_launcher_foreground,
+            title = "Mini Pizza",
+            price = 3.0
+        ),
+        Produto(
+            id = "6",
+            imageRes = R.drawable.ic_launcher_foreground,
+            title = "Assado",
+            price = 2.0
+        )
     )
 
     var quantidades by remember {
@@ -103,27 +106,38 @@ fun PedidoScreen(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
         ) {
-            produtos.chunked(2).forEachIndexed { rowIndex, rowItens ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    rowItens.forEachIndexed { colIndex, item ->
-                        val index = rowIndex * 2 + colIndex
-                        ProductCard(
-                            produto = item,
-                            onAddClick = {
-                                quantidades = quantidades.toMutableList().also { list ->
-                                    list[index] = list[index] + 1
-                                }
+
+            Spacer(modifier = Modifier.padding(4.dp))
+
+            Text(text = "Selecione os produtos desejados:", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+
+            Spacer(modifier = Modifier.padding(2.dp))
+
+            produtos.forEachIndexed { index, item ->
+                ProductCard(
+                    produto = item,
+                    quantidade = quantidades[index],
+                    onIncrement = {
+                        quantidades = quantidades.toMutableList().also { list ->
+                            list[index] = list[index] + 1
+                        }
+                    },
+                    onDecrement = {
+                        quantidades = quantidades.toMutableList().also { list ->
+
+                            if (list[index] > 0) {
+                                list[index] = list[index] - 1
                             }
-                        )
+                        }
                     }
-                }
+                )
             }
 
 
-            Spacer(modifier = Modifier.padding(2.dp))
+
+
+
+            Spacer(modifier = Modifier.padding(6.dp))
             Text(
                 text = "Total: R$ %.2f".format(total),
                 style = MaterialTheme.typography.bodyMedium,
@@ -187,15 +201,20 @@ fun PedidoScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp) // Espaço entre os botões
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Button(
-                    modifier = Modifier.weight(1f).height(60.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(60.dp),
                     shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(
+                        width = 2.dp,
+                        color = colorResource(id = R.color.marrom)),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(id = R.color.laranja)
                     ),
-                    onClick = { /* ação cliente existente */ }
+                    onClick = {  }
                 ) {
                     Text(text = "Selecionar cliente existente", textAlign = TextAlign.Center)
                 }
@@ -203,10 +222,13 @@ fun PedidoScreen(modifier: Modifier = Modifier) {
                 Button(
                     modifier = Modifier.weight(1f).height(60.dp),
                     shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(
+                        width = 2.dp,
+                        color = colorResource(id = R.color.marrom)),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(id = R.color.laranja)
                     ),
-                    onClick = { /* ação cadastrar cliente */ }
+                    onClick = {  }
                 ) {
                     Text(text = "Cadastrar novo cliente", textAlign = TextAlign.Center)
                 }
@@ -217,6 +239,9 @@ fun PedidoScreen(modifier: Modifier = Modifier) {
             Button(
                 modifier = Modifier.fillMaxWidth(0.8f),
                 shape = RoundedCornerShape(8.dp),
+                border = BorderStroke(
+                    width = 2.dp,
+                    color = colorResource(id = R.color.marrom)),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.laranja)
                 ),
